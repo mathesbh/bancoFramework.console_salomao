@@ -54,7 +54,7 @@ internal class Program
         switch (opcao)
         {
             case "1":
-                Despositar();
+                Depositar();
                 break;
             case "2":
                 Sacar();
@@ -69,7 +69,7 @@ internal class Program
         return opcao;
     }
 
-    static void Despositar()
+    static void Depositar()
     {
         Console.WriteLine("Deposito");
         Console.ReadKey();
