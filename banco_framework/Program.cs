@@ -9,6 +9,17 @@ internal class Program
         Console.WriteLine("Por favor, identifique-se");
         Console.WriteLine("");
         var pessoa = Identificacao();
+
+        OpcoesMenu();
+    }
+
+    static void OpcoesMenu()
+    {
+        string opcao;
+        do
+        {
+            opcao = Menu();
+        } while (opcao == "X");
     }
 
     static Pessoa Identificacao()
@@ -26,8 +37,53 @@ internal class Program
         Console.Clear();
 
         Console.WriteLine($"Como posso ajudar {pessoa.Nome}?");
-        Console.ReadKey();
-        
+
         return pessoa;
+    }
+
+    static string Menu()
+    {
+        Console.WriteLine("1 - Depósito");
+        Console.WriteLine("2 - Saque");
+        Console.WriteLine("3 - Sair");
+        Console.WriteLine("------------");
+        Console.WriteLine("Selecione uma opção");
+
+        string opcao = Console.ReadLine();
+
+        switch (opcao)
+        {
+            case "1":
+                Despositar();
+                break;
+            case "2":
+                Sacar();
+                break;
+            case "3":
+                Sair();
+                break;
+            default:
+                return "X";
+        }
+
+        return opcao;
+    }
+
+    static void Despositar()
+    {
+        Console.WriteLine("Deposito");
+        Console.ReadKey();
+    }
+
+    static void Sacar()
+    {
+        Console.WriteLine("Saque");
+        Console.ReadKey();
+    }
+
+    static void Sair()
+    {
+        Console.WriteLine("Até logo");
+        Environment.Exit(0);
     }
 }
