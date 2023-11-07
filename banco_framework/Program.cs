@@ -1,4 +1,5 @@
-﻿using Domain.Model;
+﻿using Application;
+using Domain.Model;
 
 internal class Program
 {
@@ -8,44 +9,44 @@ internal class Program
         Console.WriteLine("Seja bem vindo ao banco Framework");
         Console.WriteLine("Por favor, identifique-se");
         Console.WriteLine("");
-        var pessoa = Identificacao();
+        var cliente = Identificacao();
 
-        OpcoesMenu();
+        OpcoesMenu(cliente);
     }
 
-    static void OpcoesMenu()
+    static void OpcoesMenu(Cliente cliente)
     {
         string opcao;
         do
         {
-            opcao = Menu();
+            opcao = Menu(cliente);
         } while (opcao == "X");
     }
 
-    static Pessoa Identificacao()
+    static Cliente Identificacao()
     {
-        var pessoa = new Cliente();
+        var cliente = new Cliente();
 
         Console.WriteLine("Seu número de identificação:");
-        pessoa.Id = int.Parse(Console.ReadLine());
+        cliente.Id = int.Parse(Console.ReadLine());
 
         Console.WriteLine("Seu nome:");
-        pessoa.Nome = Console.ReadLine();
+        cliente.Nome = Console.ReadLine();
 
         Console.WriteLine("Seu CPF:");
-        pessoa.Cpf = Console.ReadLine();
+        cliente.Cpf = Console.ReadLine();
 
         Console.WriteLine("Seu saldo:");
-        pessoa.Saldo = double.Parse(Console.ReadLine());
+        cliente.Saldo = double.Parse(Console.ReadLine());
 
         Console.Clear();
 
-        Console.WriteLine($"Como posso ajudar {pessoa.Nome}?");
+        Console.WriteLine($"Como posso ajudar {cliente.Nome}?");
 
-        return pessoa;
+        return cliente;
     }
 
-    static string Menu()
+    static string Menu(Cliente cliente)
     {
         Console.WriteLine("1 - Depósito");
         Console.WriteLine("2 - Saque");
@@ -58,10 +59,10 @@ internal class Program
         switch (opcao)
         {
             case "1":
-                Depositar();
+                Depositar(cliente);
                 break;
             case "2":
-                Sacar();
+                Sacar(cliente);
                 break;
             case "3":
                 Sair();
@@ -73,16 +74,36 @@ internal class Program
         return opcao;
     }
 
-    static void Depositar()
+    static void Depositar(Cliente cliente)
     {
         Console.WriteLine("Deposito");
-        Console.ReadKey();
+        Console.Clear();
+        Console.WriteLine("Digite o valor: ");
+        var valor = float.Parse(Console.ReadLine());
+        
+        var calc = new Calculo();
+        cliente.Saldo = calc.Soma((float)cliente.Saldo, valor);
+        
+        Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
+        Console.WriteLine();
+        
+        OpcoesMenu(cliente);
     }
 
-    static void Sacar()
+    static void Sacar(Cliente cliente)
     {
         Console.WriteLine("Saque");
-        Console.ReadKey();
+        Console.Clear();
+        Console.WriteLine("Digite o valor: ");
+        var valor = float.Parse(Console.ReadLine());
+
+        var calc = new Calculo();
+        cliente.Saldo = calc.Subtracao((float)cliente.Saldo, valor);
+
+        Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
+        Console.WriteLine();
+
+        OpcoesMenu(cliente);
     }
 
     static void Sair()
