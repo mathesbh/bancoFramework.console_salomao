@@ -24,7 +24,7 @@ internal class Program
 
     static Pessoa Identificacao()
     {
-        var pessoa = new Pessoa();
+        var pessoa = new Cliente();
 
         Console.WriteLine("Seu número de identificação:");
         pessoa.Id = int.Parse(Console.ReadLine());
@@ -34,6 +34,10 @@ internal class Program
 
         Console.WriteLine("Seu CPF:");
         pessoa.Cpf = Console.ReadLine();
+
+        Console.WriteLine("Seu saldo:");
+        pessoa.Saldo = double.Parse(Console.ReadLine());
+
         Console.Clear();
 
         Console.WriteLine($"Como posso ajudar {pessoa.Nome}?");
@@ -84,6 +88,5 @@ internal class Program
     static void Sair()
     {
         Console.WriteLine("Até logo");
-        Environment.Exit(0);
     }
 }
