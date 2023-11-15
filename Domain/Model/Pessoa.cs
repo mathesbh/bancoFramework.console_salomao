@@ -2,9 +2,15 @@
 {
     public class Pessoa
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Cpf { get; set; }
+        public int Id { get; protected set; }
+        public string Nome { get; protected set; }
+        public string Cpf { get; protected set; }
 
+        public Pessoa(int id, string nome, string cpf)
+        {
+            Id = id;
+            Nome = nome;
+            Cpf = cpf;
+        }
     }
 }

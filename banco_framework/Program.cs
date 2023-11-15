@@ -81,8 +81,7 @@ internal class Program
         Console.WriteLine("Digite o valor: ");
         var valor = float.Parse(Console.ReadLine());
         
-        var calc = new Calculo();
-        cliente.Saldo = calc.Soma((float)cliente.Saldo, valor);
+        cliente.SetSaldo(Calculo.Soma((float)cliente.Saldo, valor));
         
         Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
         Console.WriteLine();
@@ -97,8 +96,7 @@ internal class Program
         Console.WriteLine("Digite o valor: ");
         var valor = float.Parse(Console.ReadLine());
 
-        var calc = new Calculo();
-        cliente.Saldo = calc.Subtracao((float)cliente.Saldo, valor);
+        cliente.SetSaldo(Calculo.Subtracao((float)cliente.Saldo, valor));
 
         Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
         Console.WriteLine();
