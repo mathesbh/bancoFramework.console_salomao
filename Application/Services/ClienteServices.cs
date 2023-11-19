@@ -6,6 +6,11 @@ namespace Application.Services
 {
     public class ClienteServices : IClienteServices
     {
+        public ClienteServices()
+        {
+
+        }
+
         public async Task<Cliente> IdentificacoAsync()
         {
             var erros = new List<string>();
