@@ -4,6 +4,10 @@ public class Cliente : Pessoa
 {
     public double Saldo { get; private set; }
 
+    public Cliente()
+    {
+    }
+
     public Cliente(int id, string nome, string cpf, double saldo) : base(id, nome, cpf)
     {
         Saldo = saldo;
