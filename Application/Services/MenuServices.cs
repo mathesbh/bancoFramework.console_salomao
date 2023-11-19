@@ -5,20 +5,21 @@ namespace Application.Services
 {
     public class MenuServices : IMenuServices
     {
-        public MenuServices()
+        private readonly IClienteRepository _clienteRepository;
+        public MenuServices(IClienteRepository clienteRepository)
         {
-
+            _clienteRepository = clienteRepository;
         }
         public void OpcoesMenu(Cliente cliente)
         {
             string opcao;
             do
             {
-                opcao = Menu(cliente);
+                opcao = Menu(cliente).Result;
             } while (opcao == "X");
         }
 
-        private string Menu(Cliente cliente)
+        private async Task<string> Menu(Cliente cliente)
         {
             Console.WriteLine("1 - Depósito");
             Console.WriteLine("2 - Saque");
@@ -31,10 +32,10 @@ namespace Application.Services
             switch (opcao)
             {
                 case "1":
-                    Depositar(cliente);
+                    await DepositarAsync(cliente);
                     break;
                 case "2":
-                    Sacar(cliente);
+                    await SacarAsync(cliente);
                     break;
                 case "3":
                     Sair();
@@ -46,7 +47,7 @@ namespace Application.Services
             return opcao;
         }
 
-        private void Depositar(Cliente cliente)
+        private async Task DepositarAsync(Cliente cliente)
         {
             Console.WriteLine("Deposito");
             Console.Clear();
@@ -54,6 +55,7 @@ namespace Application.Services
             var valor = float.Parse(Console.ReadLine());
 
             cliente.SetSaldo(Calculo.Soma((float)cliente.Saldo, valor));
+            await _clienteRepository.UpdateClienteAsync(cliente);
 
             Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
             Console.WriteLine();
@@ -61,7 +63,7 @@ namespace Application.Services
             OpcoesMenu(cliente);
         }
 
-        private void Sacar(Cliente cliente)
+        private async Task SacarAsync(Cliente cliente)
         {
             Console.WriteLine("Saque");
             Console.Clear();
@@ -69,6 +71,7 @@ namespace Application.Services
             var valor = float.Parse(Console.ReadLine());
 
             cliente.SetSaldo(Calculo.Subtracao((float)cliente.Saldo, valor));
+            await _clienteRepository.UpdateClienteAsync(cliente);
 
             Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
             Console.WriteLine();

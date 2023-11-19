@@ -1,10 +1,12 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
+using Repository;
 
 internal class Program
 {
-    private static IMenuServices _menuServices = new MenuServices();
-    private static IClienteServices _clienteServices = new ClienteServices();
+    private static IClienteRepository _clienteRepository = new ClienteRepository();
+    private static IMenuServices _menuServices = new MenuServices(_clienteRepository);
+    private static IClienteServices _clienteServices = new ClienteServices(_clienteRepository);
     private static void Main(string[] args)
     {
         Console.Clear();

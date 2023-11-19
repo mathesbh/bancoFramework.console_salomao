@@ -6,19 +6,28 @@ namespace Application.Services
 {
     public class ClienteServices : IClienteServices
     {
-        public ClienteServices()
+        private readonly IClienteRepository _clienteRepository;
+        public ClienteServices(IClienteRepository clienteRepository)
         {
-
+            _clienteRepository = clienteRepository;
         }
 
         public async Task<Cliente> IdentificacoAsync()
         {
+            Cliente cliente = null!;
             var erros = new List<string>();
 
             Console.WriteLine("Seu número de identificação:");
             var inputId = int.TryParse(Console.ReadLine(), out var id);
             if (!inputId)
                 erros.Add("Identificador não é válido");
+
+            cliente = await _clienteRepository.BuscaClientePorIdAsync(id);
+            if (cliente is not null)
+            {
+                MensagemComoPossoAjudar(cliente.Nome);
+                return cliente;
+            }
 
             Console.WriteLine("Seu nome:");
             var inputNome = Console.ReadLine();
@@ -46,10 +55,14 @@ namespace Application.Services
 
             Console.Clear();
 
-            var cliente = new Cliente(id, inputNome, inputCPF, saldo);
-            Console.WriteLine($"Como posso ajudar {cliente.Nome}?");
+            cliente = new Cliente(id, inputNome, inputCPF, saldo);
+            await _clienteRepository.CadastrarClienteAsync(cliente);
+            MensagemComoPossoAjudar(cliente.Nome);
 
             return cliente;
         }
+
+        private void MensagemComoPossoAjudar(string nome)
+            => Console.WriteLine($"Como posso ajudar {nome}?");
     }
 }
