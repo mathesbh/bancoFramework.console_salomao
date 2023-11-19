@@ -1,16 +1,18 @@
 ﻿using Application;
-using CpfCnpjLibrary;
+using Application.Services;
+using Domain.Interfaces;
 using Domain.Model;
 
 internal class Program
 {
+    private static IClienteServices _clienteServices = new ClienteServices();
     private static void Main(string[] args)
     {
         Console.Clear();
         Console.WriteLine("Seja bem vindo ao banco Framework");
         Console.WriteLine("Por favor, identifique-se");
         Console.WriteLine("");
-        var cliente = Identificacao();
+        var cliente = _clienteServices.IdentificacoAsync().Result;
 
         OpcoesMenu(cliente);
     }
@@ -22,47 +24,6 @@ internal class Program
         {
             opcao = Menu(cliente);
         } while (opcao == "X");
-    }
-
-    static Cliente Identificacao()
-    {
-        var erros = new List<string>();
-
-        Console.WriteLine("Seu número de identificação:");
-        var inputId = int.TryParse(Console.ReadLine(), out var id);
-        if (!inputId)
-            erros.Add("Identificador não é válido");
-
-        Console.WriteLine("Seu nome:");
-        var inputNome = Console.ReadLine();
-        if (string.IsNullOrEmpty(inputNome) || inputNome.Length <= 3)
-            erros.Add("Nome digitado não é válido");
-
-        Console.WriteLine("Seu CPF:");
-        var inputCPF = Console.ReadLine();
-        var validaCPF = Cpf.Validar(inputCPF);
-        if (!validaCPF)
-            erros.Add("CPF digitado não é válido");
-
-        Console.WriteLine("Seu saldo:");
-        var inputSaldo = double.TryParse(Console.ReadLine(),out var saldo);
-        if(!inputSaldo || saldo <= 0)
-            erros.Add("Saldo não é válido");
-
-        if(erros.Any())
-        {
-            erros.ForEach(x => Console.WriteLine(x));
-            Console.ReadKey();
-            Console.Clear();
-            Identificacao();
-        }
-
-        Console.Clear();
-
-        var cliente = new Cliente(id, inputNome, inputCPF, saldo);
-        Console.WriteLine($"Como posso ajudar {cliente.Nome}?");
-
-        return cliente;
     }
 
     static string Menu(Cliente cliente)
