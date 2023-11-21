@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Domain.Interfaces;
 using Domain.Model;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -8,15 +9,21 @@ namespace Repository
 {
     public class ClienteRepository : IClienteRepository
     {
-        private const string CONNECTION = "Server=127.0.0.1,1433;Database=bancoFramework;User ID=sa;Password=1q2w3e4r@#$";
+        private readonly string? _connection;
         public ClienteRepository()
         {
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            IConfiguration config = builder.Build();
+
+            _connection = config["ConnectionString:SqlServer"];
 
         }
 
-        public async Task<Cliente> BuscaClientePorIdAsync(int id)
+        public async Task<Cliente> BuscarClientePorIdAsync(int id)
         {
-            using (IDbConnection db = new SqlConnection(CONNECTION))
+            using (IDbConnection db = new SqlConnection(_connection))
             {
                 Cliente cliente;
                 try
@@ -38,7 +45,7 @@ namespace Repository
 
         public async Task CadastrarClienteAsync(Cliente cliente)
         {
-            using (IDbConnection db = new SqlConnection(CONNECTION))
+            using (IDbConnection db = new SqlConnection(_connection))
             {
                 try
                 {
@@ -53,9 +60,9 @@ namespace Repository
             }
         }
 
-        public async Task UpdateClienteAsync(Cliente cliente)
+        public async Task AtualizarClienteAsync(Cliente cliente)
         {
-            using (IDbConnection db = new SqlConnection(CONNECTION))
+            using (IDbConnection db = new SqlConnection(_connection))
             {
                 try
                 {

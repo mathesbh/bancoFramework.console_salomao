@@ -1,20 +1,16 @@
-﻿using Application.Services;
+﻿using bancoFramework;
 using Domain.Interfaces;
-using Repository;
+using Microsoft.Extensions.DependencyInjection;
 
 internal class Program
 {
-    private static IClienteRepository _clienteRepository = new ClienteRepository();
-    private static IMenuServices _menuServices = new MenuServices(_clienteRepository);
-    private static IClienteServices _clienteServices = new ClienteServices(_clienteRepository);
+    private static IMenuServices _menuServices;
     private static void Main(string[] args)
     {
-        Console.Clear();
-        Console.WriteLine("Seja bem vindo ao banco Framework");
-        Console.WriteLine("Por favor, identifique-se");
-        Console.WriteLine("");
-        var cliente = _clienteServices.IdentificacoAsync().Result;
+        var serviceCollection = new ServiceCollection();
+        var serviceProvider = AddApplicationServicesExtensions.AddApplicatonServices(serviceCollection).BuildServiceProvider();
+        _menuServices = serviceProvider.GetRequiredService<IMenuServices>();
 
-        _menuServices.OpcoesMenu(cliente);
+        _menuServices.BoasVindas().Wait();
     }
 }

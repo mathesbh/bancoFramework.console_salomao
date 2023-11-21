@@ -22,7 +22,7 @@ namespace Application.Services
             if (!inputId)
                 erros.Add("Identificador não é válido");
 
-            cliente = await _clienteRepository.BuscaClientePorIdAsync(id);
+            cliente = await _clienteRepository.BuscarClientePorIdAsync(id);
             if (cliente is not null)
             {
                 MensagemComoPossoAjudar(cliente.Nome);

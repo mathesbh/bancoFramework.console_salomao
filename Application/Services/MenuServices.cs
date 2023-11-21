@@ -5,12 +5,27 @@ namespace Application.Services
 {
     public class MenuServices : IMenuServices
     {
+        private readonly IClienteServices _clienteServices;
         private readonly IClienteRepository _clienteRepository;
-        public MenuServices(IClienteRepository clienteRepository)
+        public MenuServices(IClienteRepository clienteRepository, IClienteServices clienteServices)
         {
+            _clienteServices = clienteServices;
             _clienteRepository = clienteRepository;
         }
-        public void OpcoesMenu(Cliente cliente)
+
+        public async Task BoasVindas()
+        {
+            Console.Clear();
+            Console.WriteLine("Seja bem vindo ao banco Framework");
+            Console.WriteLine("Por favor, identifique-se");
+            Console.WriteLine("");
+
+            var cliente = await _clienteServices.IdentificacoAsync();
+
+            OpcoesMenu(cliente);
+        }
+
+        private void OpcoesMenu(Cliente cliente)
         {
             string opcao;
             do
@@ -55,7 +70,7 @@ namespace Application.Services
             var valor = float.Parse(Console.ReadLine());
 
             cliente.SetSaldo(Calculo.Soma((float)cliente.Saldo, valor));
-            await _clienteRepository.UpdateClienteAsync(cliente);
+            await _clienteRepository.AtualizarClienteAsync(cliente);
 
             Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
             Console.WriteLine();
@@ -71,7 +86,7 @@ namespace Application.Services
             var valor = float.Parse(Console.ReadLine());
 
             cliente.SetSaldo(Calculo.Subtracao((float)cliente.Saldo, valor));
-            await _clienteRepository.UpdateClienteAsync(cliente);
+            await _clienteRepository.AtualizarClienteAsync(cliente);
 
             Console.WriteLine($"Saldo atual é: {cliente.Saldo}");
             Console.WriteLine();

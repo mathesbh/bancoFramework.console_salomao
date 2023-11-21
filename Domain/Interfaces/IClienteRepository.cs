@@ -4,8 +4,8 @@ namespace Domain.Interfaces
 {
     public interface IClienteRepository
     {
-        Task<Cliente> BuscaClientePorIdAsync(int id);
+        Task<Cliente> BuscarClientePorIdAsync(int id);
         Task CadastrarClienteAsync(Cliente cliente);
-        Task UpdateClienteAsync(Cliente cliente);
+        Task AtualizarClienteAsync(Cliente cliente);
     }
 }
